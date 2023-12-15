@@ -8,9 +8,6 @@ from app.auth.views.logout import LogoutAPIView
 from app.auth.views.register import RegisterView
 from app.auth.views.verification_code import VerifyPhoneNumberView
 
-
-
-
 urlpatterns = [
     path("register/", RegisterView.as_view(), name='register'),
     path("register-verify/", VerifyPhoneNumberView.as_view(), name='register-verify'),
