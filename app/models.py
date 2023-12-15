@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     verification_code = models.CharField(max_length=6, null=True, blank=True)
-    activation_key_expires = models.DateTimeField(blank=True, null=True)
+    activation_key_expires = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
     objects = CustomUserManager()
 
