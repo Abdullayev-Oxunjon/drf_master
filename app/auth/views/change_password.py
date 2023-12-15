@@ -20,7 +20,7 @@ class ChangePasswordView(APIView):
     )
     def post(self, request, *args, **kwargs):
         serializer = ChangeUserModelSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid() and serializer.validated_data['password'] == serializer.validated_data['confirm_password']:
             password = serializer.validated_data['password']
 
             # Yangi parolni saqlash
@@ -30,4 +30,4 @@ class ChangePasswordView(APIView):
 
             return Response({'message': 'Parol muvaffaqiyatli o\'zgartirildi'}, status=status.HTTP_200_OK)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'message': 'Parol va tasdiqlash mos kelmadi.'}, status=status.HTTP_400_BAD_REQUEST)
