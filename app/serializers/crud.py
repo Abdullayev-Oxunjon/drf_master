@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.models import Category, Product, ProductIngredient, Ingredient, Variation
+from app.models import Category, Product, ProductIngredient, Ingredient, Variation, ProductVariation
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -35,5 +35,5 @@ class VariationSerializer(serializers.ModelSerializer):
 
 class ProductVariationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = ProductVariation
         fields = '__all__'

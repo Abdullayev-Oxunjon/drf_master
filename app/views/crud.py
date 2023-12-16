@@ -1,14 +1,16 @@
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.parsers import MultiPartParser
 
 from app.models import Product, Category, ProductVariation, Variation, ProductIngredient, Ingredient
 from app.serializers.crud import ProductSerializer, CategorySerializer, ProductVariationSerializer, VariationSerializer, \
-    ProductIngredientSerializer
+    ProductIngredientSerializer, IngredientSerializer
 
 
 # Category crud views
 class CategoryCreateAPIView(CreateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    parser_classes = [MultiPartParser, ]
 
 
 class CategoryListAPIView(ListAPIView):
@@ -33,6 +35,7 @@ class CategoryDestroyAPIView(DestroyAPIView):
 
 # Product crud views
 class ProductCreateAPIView(CreateAPIView):
+    parser_classes = [MultiPartParser, ]
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
@@ -114,27 +117,27 @@ class ProductVariationDestroyAPIView(DestroyAPIView):
 
 
 class IngredientCreateAPIView(CreateAPIView):
-    serializer_class = ProductIngredientSerializer
+    serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
 
 class IngredientListAPIView(ListAPIView):
-    serializer_class = ProductIngredientSerializer
+    serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
 
 class IngredientRetrieveAPIView(RetrieveAPIView):
-    serializer_class = ProductIngredientSerializer
+    serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
 
 class IngredientUpdateAPIView(UpdateAPIView):
-    serializer_class = ProductIngredientSerializer
+    serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
 
 class IngredientDestroyAPIView(DestroyAPIView):
-    serializer_class = ProductIngredientSerializer
+    serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
 
@@ -164,5 +167,3 @@ class ProductIngredientUpdateAPIView(UpdateAPIView):
 class ProductIngredientDestroyAPIView(DestroyAPIView):
     serializer_class = ProductIngredientSerializer
     queryset = ProductIngredient.objects.all()
-
-
