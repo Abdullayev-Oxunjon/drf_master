@@ -11,3 +11,5 @@ class IsAdminOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS or (request.user.is_authenticated and request.user.is_staff):
             return True
         return False
+
+    # nima
