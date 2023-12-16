@@ -167,3 +167,4 @@ class ProductIngredientUpdateAPIView(UpdateAPIView):
 class ProductIngredientDestroyAPIView(DestroyAPIView):
     serializer_class = ProductIngredientSerializer
     queryset = ProductIngredient.objects.all()
+
