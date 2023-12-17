@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -11,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product, Cart, Wishlist, CartItem
 from .serializers import ProductSerializer, WishlistSerializer, CartItemSerializer, RegisterModelSerializer, \
-    LoginModelSerializer
+    LoginModelSerializer, CartSerializer
 
 
 class RegisterApiView(APIView):
@@ -89,6 +88,10 @@ def add_to_cart(request, product_id):
                     status=201)
 
 
+class CartListApiView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CartSerializer
+    queryset = Cart.objects.all()
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def remove_from_cart(request, product_id):
@@ -148,9 +151,14 @@ def remove_from_wishlist(request, product_id):
     return Response(data={"message": message}, status=204)
 
 
-class WishlistListAPiView(ListAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = WishlistSerializer
-
-    def get_queryset(self):
-        return [self.request.user.wishlist]
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_wishlist(request):
+    wishlist , created = Wishlist.objects.get_or_create(
+        user=request.user
+    )
+    items = wishlist.items.all()
+    return Response(data={
+        "items": ProductSerializer(items, many=True).data,
+    },
+                    status=200)
