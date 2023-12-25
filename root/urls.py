@@ -1,3 +1,4 @@
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
@@ -24,3 +25,7 @@ urlpatterns = [
     path('', include('app.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]
+
+urlpatterns = [
+    *i18n_patterns(*urlpatterns, prefix_default_language=False),
+    ]

@@ -11,3 +11,6 @@ PyYAML==6.0.1
 sqlparse==0.4.4
 typing_extensions==4.7.1
 uritemplate==4.1.1
+
+modeltranslation~=0.25
+django-modeltranslation~=0.18.11
