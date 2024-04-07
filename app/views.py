@@ -23,6 +23,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -120,7 +121,7 @@ class ListRequestView(ListAPIView):
     filterset_fields = ["keyword", "given_time", "fullname", "telegram_id"]
     search_fields = ["keyword", "given_time", "fullname", "telegram_id"]
     ordering_fields = ["given_time", "fullname"]
-
+    pagination_class = PageNumberPagination
     @swagger_auto_schema(
 
         responses={
