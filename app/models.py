@@ -18,6 +18,7 @@ Example:
     from your_app.models import User
     user = User.objects.create_user(username='example_user', password='password123')
 """
+import uuid
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -138,3 +139,130 @@ class Client(models.Model):
         Returns the full name of the client.
         """
         return self.fullname
+
+
+# -----------------------------------------------------------------------------------------------------
+
+
+class Party(models.Model):
+    """
+    Model representing a party.
+    """
+
+    title = models.CharField(max_length=100, help_text="The title of the party.")
+    """
+    The title of the party.
+    
+    Examples:
+        "Birthday Bash"
+    """
+
+    created_at = models.DateField(help_text="The date and time when the party was created.")
+    """
+    The date and time when the party was created.
+
+    Examples:
+        "2024-04-08"
+    """
+
+    def __str__(self):
+        return self.title
+
+
+# -----------------------------------------------------------------------------------------------------
+
+
+class ChineseStorage(models.Model):
+    """
+    Model representing Chinese storage of products.
+    """
+
+    trek_code = models.UUIDField(default=uuid.uuid4, help_text="The Trek code of the product.", max_length=16)
+    """
+    The Trek code of the product.
+    Examples:
+        "550e8400-e29b-41d4-a716-446655440000"
+    """
+
+    product_title = models.CharField(max_length=100, help_text="The title of the product.")
+    """
+    The title of the product.
+    Examples:
+        "Chinese Teapot"
+    """
+
+    product_count = models.PositiveIntegerField(help_text="The quantity of the product.")
+    """
+    The quantity of the product.
+    Examples:
+        10
+    """
+
+    product_weight = models.FloatField(help_text="The weight of the product.")
+    """
+    The weight of the product.
+    Examples:
+        2.5
+    """
+
+    box = models.CharField(max_length=100, help_text="The box of the product.")
+    """
+    The box of the product.
+    Examples:
+        "Box A"
+    """
+
+    client_keyword = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='chinese_storages',
+                                       help_text="The keyword of the client.")
+    """
+    The keyword of the client.
+    Examples:
+        Client object (1)
+    """
+
+    party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name='chinese_storages',
+                              help_text="The title of the party.")
+    """
+    The title of the party.
+    Examples:
+        Party object (1)
+    """
+
+    created_at = models.DateField(help_text="The date and time when the product was created.")
+    """
+    The date and time when the product was created.
+    Examples:
+        "2024-04-08"
+    """
+
+    def __str__(self):
+        return self.product_title
+
+
+# -----------------------------------------------------------------------------------------------------
+
+class UzbekStorage(models.Model):
+    """
+    Model representing Uzbek storage of products.
+
+    Attributes:
+        client (ForeignKey): The client associated with the UzbekStorage.
+        chinese_storage (ForeignKey): The ChineseStorage associated with the UzbekStorage.
+        party (ForeignKey): The party associated with the UzbekStorage.
+        created_at (DateField): The date and time when the UzbekStorage was created.
+        price (DecimalField): The price of the product stored in UzbekStorage.
+        status (BooleanField): The status indicating whether the product is available or not.
+    """
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='uzbek_storages',
+                               help_text="The keyword of the client.")
+    chinese_storage = models.ForeignKey(ChineseStorage, on_delete=models.CASCADE, related_name='uzbek_storages',
+                                        help_text="The Trek code of the product.")
+    party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name='uzbek_storages',
+                              help_text="The title of the party.")
+    created_at = models.DateField(help_text="The date and time when the product was created.")
+    price = models.FloatField(help_text="The price of the product.")
+    status = models.BooleanField(default=False, help_text="The status of the product.")
+
+    def __str__(self):
+        return self.chinese_storage.product_title
